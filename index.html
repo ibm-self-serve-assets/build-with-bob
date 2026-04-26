@@ -147,12 +147,13 @@ h1 .accent { color: var(--accent); }
 .btn-sessions {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   flex: 0 0 auto;
-  background: var(--bg3); color: var(--text); font-size: 17px; font-weight: 500;
-  padding: 15px 24px; border-radius: 8px; border: 1.5px solid var(--border);
+  background: var(--accent-light); color: var(--accent); border: 1.5px solid rgba(26,115,232,0.35);
+  font-size: 17px; font-weight: 500;
+  padding: 15px 24px; border-radius: 8px;
   text-decoration: none; white-space: normal; text-align: center; line-height: 1.3;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
-.btn-sessions:hover { background: #e3e8ef; border-color: #b0b8c4; color: var(--text); }
+.btn-sessions:hover { background: #d2e3fc; border-color: rgba(26,115,232,0.55); box-shadow: 0 2px 8px rgba(26,115,232,0.15); }
 
 /* Secondary action links row */
 .hero-links-row {
@@ -272,6 +273,12 @@ h1 .accent { color: var(--accent); }
 .status-upcoming  { background: var(--accent-light); color: var(--accent); }
 .status-scheduled { background: var(--bg3); color: var(--text-secondary); }
 .status-recorded  { background: var(--green-light); color: var(--green); cursor: pointer; }
+.status-slides {
+  background: var(--bg3); color: var(--text-secondary);
+  border-color: rgba(0,0,0,0.12);
+  cursor: pointer;
+}
+.status-slides::before { content: "⤓"; font-size: 12px; }
 .s-title { font-size: 19px; font-weight: 500; color: var(--text); margin-bottom: 8px; line-height: 1.4; }
 .s-desc  { font-size: 16px; color: var(--text-secondary); line-height: 1.65; }
 
@@ -397,7 +404,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
   <div class="session-list-wrapper">
   <div class="session-list">
 
-    <div class="session-item" data-date="2026-03-20" data-recording="https://www.youtube.com/watch?v=xrpFD3i-dA8">
+    <div class="session-item" data-date="2026-03-20" data-recording="https://www.youtube.com/watch?v=xrpFD3i-dA8" data-slides="https://ibm.box.com/s/tmjb0o9sp49obfk0wm949wn4hopnidii">
       <div><div class="s-month">Mar</div><div class="s-day">20</div><div class="s-year">2026</div></div>
       <div>
         <div class="s-title">Intro to Building Blocks with Bob</div>
@@ -405,7 +412,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
       </div>
     </div>
 
-    <div class="session-item" data-date="2026-04-03" data-recording="https://www.youtube.com/watch?v=Otpm5sDJAuw">
+    <div class="session-item" data-date="2026-04-03" data-recording="https://www.youtube.com/watch?v=Otpm5sDJAuw" data-slides="https://ibm.box.com/s/udlde7tu3hlj59fhth6l4zyrhuzt2n97">
       <div><div class="s-month">Apr</div><div class="s-day">03</div><div class="s-year">2026</div></div>
       <div>
         <div class="s-title">Build a Custom Agent in Minutes with Bob: Smart Pet Grooming Manager</div>
@@ -413,7 +420,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
       </div>
     </div>
 
-    <div class="session-item" data-date="2026-04-17" data-recording="https://www.youtube.com/watch?v=99Iz3Nucveg">
+    <div class="session-item" data-date="2026-04-17" data-recording="https://www.youtube.com/watch?v=99Iz3Nucveg" data-slides="https://ibm.box.com/s/w1e0vix3qwh5c5fhn5v5vonn26ckvyiy">
       <div><div class="s-month">Apr</div><div class="s-day">17</div><div class="s-year">2026</div></div>
       <div>
         <div class="s-title">Automate Observability and Application Resiliency with Bob</div>
@@ -440,7 +447,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
   </div>
   </div>
   <div class="scroll-hint">
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v10M4 9l4 4 4-4"/></svg>
+    <svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v10M4 9l4 4 4-4"/></svg>
     Scroll for more sessions
   </div>
 </div>
@@ -486,6 +493,8 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
     var badge = document.createElement('span');
     badge.className = 'session-status';
 
+    var slides = item.getAttribute('data-slides');
+
     if (diffDays < 0) {
       var recording = item.getAttribute('data-recording');
       if (recording) {
@@ -498,6 +507,17 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
         link.style.cursor = 'pointer';
         var title = item.querySelector('.s-title');
         if (title) { title.parentNode.insertBefore(link, title); }
+        if (slides) {
+          var slidesLink = document.createElement('a');
+          slidesLink.href = slides;
+          slidesLink.target = '_blank';
+          slidesLink.className = 'session-status status-slides';
+          slidesLink.textContent = 'Download Slides';
+          slidesLink.style.textDecoration = 'none';
+          slidesLink.style.cursor = 'pointer';
+          slidesLink.style.marginLeft = '8px';
+          title.parentNode.insertBefore(slidesLink, title);
+        }
         return;
       }
       badge.classList.add('status-recorded');
@@ -513,6 +533,17 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
     var title = item.querySelector('.s-title');
     if (title) {
       title.parentNode.insertBefore(badge, title);
+      if (diffDays < 0 && slides) {
+        var slidesLink = document.createElement('a');
+        slidesLink.href = slides;
+        slidesLink.target = '_blank';
+        slidesLink.className = 'session-status status-slides';
+        slidesLink.textContent = 'Download Slides';
+        slidesLink.style.textDecoration = 'none';
+        slidesLink.style.cursor = 'pointer';
+        slidesLink.style.marginLeft = '8px';
+        title.parentNode.insertBefore(slidesLink, title);
+      }
     }
   });
 })();
