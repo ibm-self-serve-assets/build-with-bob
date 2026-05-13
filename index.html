@@ -125,24 +125,26 @@ h1 .accent { color: var(--accent); }
 .btn-ibmer {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   flex: 1; min-width: 0;
-  background: var(--accent); color: #fff; font-size: 17px; font-weight: 500;
+  background: #4a8fec; color: #fff; font-size: 17px; font-weight: 700;
   padding: 15px 24px; border-radius: 8px; text-decoration: none;
   text-align: center; white-space: normal; line-height: 1.3;
   transition: background 0.15s, box-shadow 0.15s;
-  box-shadow: 0 1px 3px rgba(26,115,232,0.3);
+  box-shadow: 0 1px 3px rgba(26,115,232,0.2);
 }
-.btn-ibmer:hover { background: var(--accent-dark); box-shadow: 0 2px 8px rgba(26,115,232,0.35); }
+.btn-ibmer:hover { background: var(--accent); box-shadow: 0 2px 8px rgba(26,115,232,0.3); }
 
 .btn-partner {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   flex: 1; min-width: 0;
-  background: var(--purple); color: #fff; font-size: 17px; font-weight: 500;
+  background: #9968f0; color: #fff; font-size: 17px; font-weight: 700;
   padding: 15px 24px; border-radius: 8px; text-decoration: none;
   text-align: center; white-space: normal; line-height: 1.3;
   transition: background 0.15s, box-shadow 0.15s;
-  box-shadow: 0 1px 3px rgba(124,58,237,0.3);
+  box-shadow: 0 1px 3px rgba(124,58,237,0.2);
 }
-.btn-partner:hover { background: var(--purple-dark); box-shadow: 0 2px 8px rgba(124,58,237,0.35); }
+.btn-partner:hover { background: var(--purple); box-shadow: 0 2px 8px rgba(124,58,237,0.3); }
+.btn-ibmer .btn-sub,
+.btn-partner .btn-sub { display: block; width: 100%; font-size: inherit; font-weight: 500; margin-top: 2px; }
 
 .btn-sessions {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -154,6 +156,29 @@ h1 .accent { color: var(--accent); }
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 .btn-sessions:hover { background: #d2e3fc; border-color: rgba(26,115,232,0.55); box-shadow: 0 2px 8px rgba(26,115,232,0.15); }
+
+.session-details-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 8px;
+}
+.link-view-sessions {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--accent); font-size: 17px; font-weight: 700;
+  text-decoration: none; letter-spacing: 0.02em;
+  transition: color 0.15s;
+}
+.link-view-sessions:hover { color: var(--accent-dark); text-decoration: underline; }
+.link-view-sessions .live-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #e11d48;
+  box-shadow: 0 0 0 0 rgba(225,29,72,0.7);
+  animation: live-blink 1.4s infinite;
+}
+@keyframes live-blink {
+  0%   { opacity: 1; box-shadow: 0 0 0 0 rgba(225,29,72,0.7); }
+  70%  { opacity: 0.6; box-shadow: 0 0 0 8px rgba(225,29,72,0); }
+  100% { opacity: 1; box-shadow: 0 0 0 0 rgba(225,29,72,0); }
+}
 
 /* Secondary action links row */
 .hero-links-row {
@@ -190,6 +215,49 @@ h1 .accent { color: var(--accent); }
 .hero-link-btn.bob svg { stroke: var(--purple); }
 .hero-link-btn.bob:hover { background: #ddd6fe; border-color: rgba(124,58,237,0.55); box-shadow: 0 2px 8px rgba(124,58,237,0.15); }
 
+/* Resource cards */
+.resource-links {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;
+}
+.resource-link {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; border-radius: 12px;
+  background: #fff; border: 1.5px solid var(--border-light);
+  text-decoration: none; color: #1f2937;
+  font-size: 16px; font-weight: 600; line-height: 1.3;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  position: relative; overflow: hidden;
+}
+.resource-link::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--bar-from, transparent), var(--bar-to, transparent));
+  opacity: 0; transition: opacity 0.18s ease;
+  pointer-events: none;
+}
+.resource-link:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(15,23,42,0.08); border-color: var(--bar-from, var(--border-light)); }
+.resource-link:hover::before { opacity: 0.06; }
+.resource-link:hover .resource-arrow { transform: translateX(3px); opacity: 1; }
+.resource-icon {
+  flex: 0 0 auto; position: relative; z-index: 1;
+  width: 42px; height: 42px; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--icon-bg, var(--accent-light));
+  color: var(--icon-color, var(--accent));
+}
+.resource-icon img { width: 28px; height: 28px; object-fit: contain; }
+.resource-text { flex: 1 1 auto; position: relative; z-index: 1; }
+.resource-arrow { flex: 0 0 auto; position: relative; z-index: 1; color: var(--icon-color, var(--accent)); opacity: 0.5; transition: transform 0.18s ease, opacity 0.18s ease; }
+
+.resource-link.yt        { --bar-from:#d93025; --bar-to:#ff6b5e; --icon-bg:#fff1f0; --icon-color:#d93025; }
+.resource-link.docs      { --bar-from:#1a73e8; --bar-to:#4a9af0; --icon-bg:var(--accent-light); --icon-color:var(--accent); }
+.resource-link.bob       { --bar-from:#7c3aed; --bar-to:#a78bfa; --icon-bg:var(--purple-light); --icon-color:var(--purple); }
+.resource-link.bobathon  { --bar-from:#f59e0b; --bar-to:#fbbf24; --icon-bg:#fff7e6; --icon-color:#b45309; }
+
+@media (max-width: 720px) {
+  .resource-links { grid-template-columns: 1fr; }
+}
+
 .hero-link-btn.contact {
   background: #fff0f6; border-color: rgba(194,24,91,0.25); color: #c2185b;
 }
@@ -201,11 +269,11 @@ h1 .accent { color: var(--accent); }
   float: right;
   margin-left: 40px;
   margin-bottom: 16px;
-  width: 280px;
+  width: 320px;
   flex-shrink: 0;
 }
 .hero-image img {
-  width: 100%; max-width: 300px; height: auto;
+  width: 100%; max-width: 340px; height: auto;
   mix-blend-mode: multiply;
   filter: drop-shadow(0 4px 16px rgba(26,115,232,0.08));
 }
@@ -232,13 +300,7 @@ h1 .accent { color: var(--accent); }
 
 /* SESSIONS */
 .session-list-wrapper { position: relative; }
-.session-list-wrapper::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(transparent, var(--bg)); pointer-events: none; transition: opacity 0.3s; }
-.session-list-wrapper.scrolled-bottom::after { opacity: 0; }
-.scroll-hint { text-align: center; padding: 8px 0 4px; font-size: 15px; color: #555; opacity: 0.8; transition: opacity 0.3s; }
-.scroll-hint svg { vertical-align: middle; margin-right: 4px; animation: bounce 1.5s infinite; }
-@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
-.session-list-wrapper.scrolled-bottom + .scroll-hint { opacity: 0; }
-.session-list { display: flex; flex-direction: column; max-height: 600px; overflow-y: auto; }
+.session-list { display: flex; flex-direction: column; }
 .session-item {
   display: grid; grid-template-columns: 90px 1fr;
   gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--border-light);
@@ -351,37 +413,52 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
           <div class="btn-group-label">Join the webinar</div>
           <div class="hero-actions-row">
             <a href="https://ibm.biz/RegisterBuildingBlocksBobWebinar" target="_blank" class="btn-partner">
-              Register for Webinar (Business Partners)
+              <span>Register for Webinar<span class="btn-sub">(Business Partners)</span></span>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
             </a>
             <a href="https://ibm.biz/BuildwithBobYL" target="_blank" class="btn-ibmer">
-              Register for Webinar (IBMers)
+              <span>Register for Webinar<span class="btn-sub">(IBMers)</span></span>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
             </a>
-            <a href="#sessions" class="btn-sessions">View sessions</a>
           </div>
         </div>
 
         <!-- Row 2: Additional resources -->
         <div class="btn-group">
           <div class="btn-group-label">Additional resources</div>
-          <div class="hero-links-row">
-          <a href="https://www.youtube.com/@BuildwithIBM" target="_blank" class="hero-link-btn yt">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
-              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" fill="#d93025"/>
-              <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/>
-            </svg>
-            Subscribe to Our YouTube Channel
-          </a>
-          <a href="https://ibm.biz/BuildingBlocks" target="_blank" class="hero-link-btn docs">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-            Building Blocks Documentation
-          </a>
-          <a href="https://bob.ibm.com/" target="_blank" class="hero-link-btn bob">
-            <img src="data:image/png;base64,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" alt="Bob" style="width:28px;height:28px;object-fit:contain;mix-blend-mode:multiply;" />
-            Try Bob
-          </a>
-
+          <ul class="resource-links">
+            <li><a href="https://www.youtube.com/@BuildwithIBM" target="_blank" class="resource-link yt">
+              <span class="resource-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="22" height="22" aria-hidden="true">
+                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" fill="#d93025"/>
+                  <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/>
+                </svg>
+              </span>
+              <span class="resource-text">Subscribe to Our YouTube Channel</span>
+              <svg class="resource-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a></li>
+            <li><a href="https://ibm.biz/BuildingBlocks" target="_blank" class="resource-link docs">
+              <span class="resource-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              </span>
+              <span class="resource-text">Explore Building Blocks Documentation</span>
+              <svg class="resource-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a></li>
+            <li><a href="https://bob.ibm.com/" target="_blank" class="resource-link bob">
+              <span class="resource-icon">
+                <img src="bob_logo.svg" alt="" aria-hidden="true" />
+              </span>
+              <span class="resource-text">Try Bob</span>
+              <svg class="resource-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a></li>
+            <li><a href="https://ibm-self-serve-assets.github.io/build-with-bob-a-thon/" target="_blank" class="resource-link bobathon">
+              <span class="resource-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+              </span>
+              <span class="resource-text">Sign up for a Build with Bob-a-thon Workshop</span>
+              <svg class="resource-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -390,7 +467,13 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
 
 <!-- STATS -->
 <div style="max-width:1000px;margin:0 auto;padding:18px 2rem 0;">
-  <div class="btn-group-label">Session details</div>
+  <div class="session-details-header">
+    <div class="btn-group-label" style="margin-bottom:0;">Session details</div>
+    <a href="#sessions" class="link-view-sessions">
+      <span class="live-dot" aria-hidden="true"></span>
+      View Sessions
+    </a>
+  </div>
 </div>
 <div class="stats-row">
   <div class="stat-item"><div class="stat-val">2<span class="unit">× / mo</span></div><div class="stat-lbl">Cadence</div></div>
@@ -446,10 +529,6 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
 
   </div>
   </div>
-  <div class="scroll-hint">
-    <svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v10M4 9l4 4 4-4"/></svg>
-    Scroll for more sessions
-  </div>
 </div>
 
 <footer>
@@ -464,21 +543,6 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
 </footer>
 <script>
 (function() {
-  var listEl = document.querySelector('.session-list');
-  var wrapper = document.querySelector('.session-list-wrapper');
-  var hint = document.querySelector('.scroll-hint');
-  if (listEl && wrapper) {
-    listEl.addEventListener('scroll', function() {
-      if (listEl.scrollTop + listEl.clientHeight >= listEl.scrollHeight - 10) {
-        wrapper.classList.add('scrolled-bottom');
-        if (hint) hint.style.opacity = '0';
-      } else {
-        wrapper.classList.remove('scrolled-bottom');
-        if (hint) hint.style.opacity = '0.8';
-      }
-    });
-  }
-
   var today = new Date();
   today.setHours(0,0,0,0);
 
