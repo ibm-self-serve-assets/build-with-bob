@@ -576,7 +576,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
       </div>
     </div>
 
-    <div class="session-item" data-date="2026-07-24">
+    <div class="session-item" data-date="2026-07-24" data-recording="https://www.youtube.com/watch?v=6_GKpt-hF6U" data-slides="https://ibm.box.com/s/kdosp2yaqs0t0kpg6c344l4oru7p8hon">
       <div><div class="s-month">Jul</div><div class="s-day">24</div><div class="s-year">2026</div></div>
       <div>
         <div class="s-title">Meet Bob 2.0 — Rebuilt to be faster, smarter and more transparent</div>
@@ -623,32 +623,33 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
     badge.className = 'session-status';
 
     var slides = item.getAttribute('data-slides');
+    var recording = item.getAttribute('data-recording');
+
+    if (recording) {
+      var link = document.createElement('a');
+      link.href = recording;
+      link.target = '_blank';
+      link.className = 'session-status status-recorded';
+      link.textContent = 'Past — Watch Recording';
+      link.style.textDecoration = 'none';
+      link.style.cursor = 'pointer';
+      var title = item.querySelector('.s-title');
+      if (title) { title.parentNode.insertBefore(link, title); }
+      if (slides) {
+        var slidesLink = document.createElement('a');
+        slidesLink.href = slides;
+        slidesLink.target = '_blank';
+        slidesLink.className = 'session-status status-slides';
+        slidesLink.textContent = 'Download Slides';
+        slidesLink.style.textDecoration = 'none';
+        slidesLink.style.cursor = 'pointer';
+        slidesLink.style.marginLeft = '8px';
+        title.parentNode.insertBefore(slidesLink, title);
+      }
+      return;
+    }
 
     if (diffDays < 0) {
-      var recording = item.getAttribute('data-recording');
-      if (recording) {
-        var link = document.createElement('a');
-        link.href = recording;
-        link.target = '_blank';
-        link.className = 'session-status status-recorded';
-        link.textContent = 'Past — Watch Recording';
-        link.style.textDecoration = 'none';
-        link.style.cursor = 'pointer';
-        var title = item.querySelector('.s-title');
-        if (title) { title.parentNode.insertBefore(link, title); }
-        if (slides) {
-          var slidesLink = document.createElement('a');
-          slidesLink.href = slides;
-          slidesLink.target = '_blank';
-          slidesLink.className = 'session-status status-slides';
-          slidesLink.textContent = 'Download Slides';
-          slidesLink.style.textDecoration = 'none';
-          slidesLink.style.cursor = 'pointer';
-          slidesLink.style.marginLeft = '8px';
-          title.parentNode.insertBefore(slidesLink, title);
-        }
-        return;
-      }
       badge.classList.add('status-recorded');
       badge.textContent = 'Past — Watch Recording';
     } else if (diffDays <= 14) {
