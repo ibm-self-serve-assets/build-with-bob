@@ -331,6 +331,16 @@ h1 .accent { color: var(--accent); }
 .s-month { font-size: 15px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
 .s-day { font-size: 42px; font-weight: 300; color: var(--text); line-height: 1; margin: 2px 0 4px; }
 .s-year { font-size: 15px; color: var(--text-muted); }
+.s-time { margin-top: 8px; }
+.s-time-day {
+  font-size: 12px; font-weight: 600; color: var(--accent);
+  letter-spacing: 0.03em;
+}
+.s-time-clock {
+  font-size: 12px; font-weight: 600; color: var(--accent);
+  letter-spacing: 0.03em;
+}
+.s-time-clock::before { content: "🕘 "; font-weight: 400; }
 .session-status {
   display: inline-flex; align-items: center; gap: 6px;
   font-size: 13px; font-weight: 600;
@@ -663,6 +673,26 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
         title.parentNode.insertBefore(slidesLink, title);
       }
       return;
+    }
+
+    // Upcoming/scheduled sessions: show the weekday + session time under the date.
+    if (diffDays >= 0) {
+      var yearEl = item.querySelector('.s-year');
+      if (yearEl) {
+        var dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        var weekday = dayNames[sessionDate.getDay()];
+        var timeEl = document.createElement('div');
+        timeEl.className = 's-time';
+        var dayLine = document.createElement('div');
+        dayLine.className = 's-time-day';
+        dayLine.textContent = weekday;
+        var clockLine = document.createElement('div');
+        clockLine.className = 's-time-clock';
+        clockLine.textContent = item.getAttribute('data-time') || '11:00 AM ET';
+        timeEl.appendChild(dayLine);
+        timeEl.appendChild(clockLine);
+        yearEl.parentNode.appendChild(timeEl);
+      }
     }
 
     if (diffDays < 0) {
