@@ -372,6 +372,11 @@ h1 .accent { color: var(--accent); }
   cursor: pointer;
 }
 .status-slides::before { content: "⤓"; font-size: 12px; }
+.status-event {
+  background: var(--purple-light); color: var(--purple);
+  border-color: rgba(124,58,237,0.35);
+}
+.status-event::before { content: "★"; font-size: 10px; }
 .s-title { font-size: 19px; font-weight: 500; color: var(--text); margin-bottom: 8px; line-height: 1.4; }
 .s-desc  { font-size: 16px; color: var(--text-secondary); line-height: 1.65; }
 
@@ -637,7 +642,23 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
     <div class="session-item" data-date="2026-10-15">
       <div><div class="s-month">Oct</div><div class="s-day">15</div><div class="s-year">2026</div></div>
       <div>
-        <div class="s-title">Session 15 — Title Coming Soon</div>
+        <div class="s-title">Intelligent Infrastructure Migration Between Hyperscalers, Powered by IBM Bob, Terraform, Turbonomic, and Instana</div>
+        <div class="s-desc">Accelerate your journey to the cloud with an intelligent and automated approach to Connect, Assess, Discover, and Migrate. See how organizations can confidently execute cloud migrations by connecting to their existing IT environments and automatically assess applications and infrastructure to find the optimal migration opportunities. Complex infrastructure data is turned into actionable insights to accelerate decision-making with an end-to-end, automation-driven migration experience.</div>
+      </div>
+    </div>
+
+    <div class="session-item" data-date="2026-10-29" data-badge="IBM TechXchange" data-time="none">
+      <div><div class="s-month">Oct</div><div class="s-day">29</div><div class="s-year">2026</div></div>
+      <div>
+        <div class="s-title">IBM TechXchange — No Session This Week</div>
+        <div class="s-desc">The Build with Bob series is taking a short break while the team is at IBM TechXchange. We'll be back with our next biweekly session on November 12 — see you there!</div>
+      </div>
+    </div>
+
+    <div class="session-item" data-date="2026-11-12">
+      <div><div class="s-month">Nov</div><div class="s-day">12</div><div class="s-year">2026</div></div>
+      <div>
+        <div class="s-title">Session 16 — Title Coming Soon</div>
         <div class="s-desc">Details for this session will be announced shortly. Register to be notified.</div>
       </div>
     </div>
@@ -661,6 +682,29 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
   var today = new Date();
   today.setHours(0,0,0,0);
 
+  // Default recording link for past sessions that don't yet have a specific
+  // video URL — "Past — Watch Recording" points here until data-recording is set.
+  var CHANNEL_URL = 'https://www.youtube.com/@BuildwithIBM';
+
+  // Default slides link for past sessions whose deck isn't posted yet.
+  // Built as a self-contained blob URL so NO extra file needs to be published —
+  // only index.html. "Download Slides" opens this "coming soon" page until
+  // data-slides is set on the session.
+  var SLIDES_COMING_SOON = URL.createObjectURL(new Blob([
+    '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+    '<title>Slides Coming Soon — Build with Bob</title><style>' +
+    'html,body{height:100%;margin:0}body{display:flex;flex-direction:column;align-items:center;' +
+    'justify-content:center;min-height:100vh;gap:14px;text-align:center;padding:24px;' +
+    'font-family:\'IBM Plex Sans\',-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Helvetica,Arial,sans-serif;' +
+    'color:#1f2937;background:#f7f8fa}.brand{font-size:15px;font-weight:600;letter-spacing:.04em;' +
+    'text-transform:uppercase;color:#6b7280}h1{font-size:32px;font-weight:300;margin:0;color:#111827}' +
+    'p{font-size:16px;color:#4b5563;margin:0;max-width:460px;line-height:1.6}.dot{color:#1a73e8}</style>' +
+    '</head><body><div class="brand">Build with Bob<span class="dot">.</span></div>' +
+    '<h1>Slides coming soon</h1><p>The deck for this session is being prepared and will be ' +
+    'available here shortly. Thanks for your patience!</p></body></html>'
+  ], {type: 'text/html'}));
+
   var sessions = document.querySelectorAll('.session-item[data-date]');
 
   // Show latest sessions first: reorder newest-to-oldest by date.
@@ -683,6 +727,16 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
 
     var slides = item.getAttribute('data-slides');
     var recording = item.getAttribute('data-recording');
+
+    // Past session with no specific video yet: fall back to the channel,
+    // unless it's a special entry (e.g. a conference week) with a custom badge.
+    if (!recording && diffDays < 0 && !item.getAttribute('data-badge')) {
+      recording = CHANNEL_URL;
+    }
+    // Likewise, past session with no deck yet: fall back to the "coming soon" page.
+    if (!slides && diffDays < 0 && !item.getAttribute('data-badge')) {
+      slides = SLIDES_COMING_SOON;
+    }
 
     if (recording) {
       var link = document.createElement('a');
@@ -709,7 +763,8 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
     }
 
     // Upcoming/scheduled sessions: show the weekday + session time under the date.
-    if (diffDays >= 0) {
+    // (data-time="none" suppresses it — e.g. for conference-week entries.)
+    if (diffDays >= 0 && item.getAttribute('data-time') !== 'none') {
       var yearEl = item.querySelector('.s-year');
       if (yearEl) {
         var dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -728,7 +783,11 @@ footer { background: var(--bg2); border-top: 1px solid var(--border-light); padd
       }
     }
 
-    if (diffDays < 0) {
+    var customBadge = item.getAttribute('data-badge');
+    if (customBadge) {
+      badge.classList.add('status-event');
+      badge.textContent = customBadge;
+    } else if (diffDays < 0) {
       badge.classList.add('status-recorded');
       badge.textContent = 'Past — Watch Recording';
     } else if (diffDays <= 14) {
